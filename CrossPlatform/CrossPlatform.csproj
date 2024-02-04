@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RuntimeIdentifiers>win-x64; linux-x64</RuntimeIdentifiers>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5"/>
+    </ItemGroup>
+    
+    <ItemGroup Label="LinuxResources" Condition="$(RuntimeIdentifier.StartsWith('linux'))">
+        <Content Include="run">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <EmbeddedResource Include="Images\linux.png">
+            <LogicalName>Images.Banner.png</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup Label="WindowsResources" Condition="$(RuntimeIdentifier.StartsWith('win'))">
+        <EmbeddedResource Include="Images\windows.png">
+            <LogicalName>Images.Banner.png</LogicalName>
+        </EmbeddedResource>
+        <Content Include="run.exe">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+</Project>
